@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AC Remote</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <script>const states = {
+            off: { "power": 0 },
+            cool: { "power": 1, "mode": 1, "temp": 25, "fan": 0 },
+            dry: { "power": 1, "mode": 2, "temp": 25, "fan": 0 },
+            heat: { "power": 1, "mode": 3, "temp": 25, "fan": 0 },
+            fan: { "power": 1, "mode": 4, "temp": 25, "fan": 0 }
+        };
+        w3.getHttpObject("state", state);
+
+        function state(data) {
+            w3.displayObject("state", data);
+        }
+
+        function update(state) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    w3.displayObject("state", JSON.parse(this.responseText));
+                }
+            };
+            xhttp.open("PUT", "state", true);
+            xhttp.send(JSON.stringify(states[state]));
+        }</script>
+</head>
+
+<body>
+    <div class="w3-container w3-light-blue">
+        <h1>AC Remote</h1>
+    </div>
+    <p id="update"></p>
+    <p></p>
+    <div class="w3-container" id="state">
+        <table class="w3-table-all" id="state">
+            <tr>
+                <td>Mode</td>
+                <td>{{mode}}</td>
+            </tr>
+            <tr>
+                <td>Fan</td>
+                <td>{{fan}}</td>
+            </tr>
+            <tr>
+                <td>Temp</td>
+                <td>{{temp}}</td>
+            </tr>
+            <tr>
+                <td>Power</td>
+                <td>{{power}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="w3-container">
+        <p></p><button class="w3-button w3-red" style="width:100%" onclick='update("off")'>Power Off</button>
+        <p></p><button class="w3-button w3-blue" style="width:100%" onclick='update("cool")'>Cooling</button>
+        <p></p><button class="w3-button w3-amber" style="width:100%" onclick='update("dry")'>Dry</button>
+        <p></p><button class="w3-button w3-deep-orange" style="width:100%" onclick='update("heat")'>Heating</button>
+        <p></p><button class="w3-button w3-aqua" style="width:100%" onclick='update("fan")'>Fan</button>
+    </div>
+</body>
+
+</html>
